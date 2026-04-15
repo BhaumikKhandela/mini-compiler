@@ -1,0 +1,4 @@
+Declared: a
+Declared: b
+Declared: max
+Semantic analysis successful

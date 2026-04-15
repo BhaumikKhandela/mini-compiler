@@ -1,0 +1,18 @@
+x = 1
+y = 2
+t1 = x != y
+IFZ t1 GOTO L1
+t2 = x + y
+z = t2
+GOTO L2
+L1:
+t3 = x - y
+z = t3
+L2:
+L3:
+t4 = z < 10
+IFZ t4 GOTO L4
+t5 = z + 2
+z = t5
+GOTO L3
+L4:

@@ -1,0 +1,16 @@
+Declarations:
+  int x
+  int y
+  int z
+Statements:
+  assign x = 1
+  assign y = 2
+  if (x != y)
+    block
+      assign z = (x + y)
+  else
+    block
+      assign z = (x - y)
+  while (z < 10)
+    block
+      assign z = (z + 2)

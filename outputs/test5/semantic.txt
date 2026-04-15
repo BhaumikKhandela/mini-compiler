@@ -1,0 +1,4 @@
+Declared: x
+Declared: y
+Declared: z
+Semantic analysis successful

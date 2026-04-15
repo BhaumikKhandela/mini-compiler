@@ -1,0 +1,11 @@
+i = 0
+sum = 0
+L1:
+t1 = 0 < 5
+IFZ t1 GOTO L2
+t2 = 0 + 0
+sum = t2
+t3 = 0 + 1
+i = t3
+GOTO L1
+L2:

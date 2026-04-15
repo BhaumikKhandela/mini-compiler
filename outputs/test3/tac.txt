@@ -1,0 +1,9 @@
+a = 8
+b = 5
+t1 = a > b
+IFZ t1 GOTO L1
+max = a
+GOTO L2
+L1:
+max = b
+L2:

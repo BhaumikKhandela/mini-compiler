@@ -1,0 +1,10 @@
+Declarations:
+  int a
+  int b
+  int c
+  int d
+Statements:
+  assign a = 2
+  assign b = 3
+  assign c = ((a + b) * (a + b))
+  assign d = (c / 2)

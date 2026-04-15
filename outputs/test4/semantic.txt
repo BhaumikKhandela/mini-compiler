@@ -1,0 +1,3 @@
+Declared: i
+Declared: sum
+Semantic analysis successful

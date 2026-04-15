@@ -1,0 +1,13 @@
+Declarations:
+  int a
+  int b
+  int max
+Statements:
+  assign a = 8
+  assign b = 5
+  if (a > b)
+    block
+      assign max = a
+  else
+    block
+      assign max = b
