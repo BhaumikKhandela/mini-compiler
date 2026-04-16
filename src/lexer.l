@@ -6,6 +6,7 @@
 %}
 
 %%
+#[^\n]*              { /* skip preprocessor directives like #include ... */ }
 "int"                 { return INT; }
 "if"                  { return IF; }
 "else"                { return ELSE; }

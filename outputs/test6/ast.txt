@@ -1,0 +1,12 @@
+Declarations:
+Statements:
+  block
+    decl a, b
+    assign a = 5
+    assign b = 5
+    if ((a + b) > 10)
+      block
+        assign b = 10
+    else
+      block
+        assign a = 10

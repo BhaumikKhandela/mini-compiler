@@ -1,7 +1,6 @@
 Declarations:
-  int i
-  int sum
 Statements:
+  decl i, sum
   assign i = 0
   assign sum = 0
   while (i < 5)

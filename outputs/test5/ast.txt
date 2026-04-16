@@ -1,8 +1,6 @@
 Declarations:
-  int x
-  int y
-  int z
 Statements:
+  decl x, y, z
   assign x = 1
   assign y = 2
   if (x != y)

@@ -1,0 +1,22 @@
+; MIPS-like pseudo assembly
+LI R1, 5
+STORE R1, a
+LI R1, 5
+STORE R1, b
+LI R1, 5
+LI R2, 5
+ADD R3, R1, R2
+STORE R3, t1
+LOAD R1, t1
+LI R2, 10
+SLT R3, R2, R1
+STORE R3, t2
+LOAD R1, t2
+BEQ R1, R0, L1
+LI R1, 10
+STORE R1, b
+J L2
+L1:
+LI R1, 10
+STORE R1, a
+L2:

@@ -1,8 +1,6 @@
 Declarations:
-  int a
-  int b
-  int c
 Statements:
+  decl a, b, c
   assign a = 5
   assign b = 10
   assign c = (a + b)

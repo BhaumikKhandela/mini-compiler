@@ -32,7 +32,11 @@ static void gen_stmt(const Stmt*s){
             char*l_start=new_label(); char*l_end=new_label(); emit("LABEL",NULL,NULL,l_start);
             char*c=gen_expr(s->data.while_stmt.cond); emit("IFZ",c,NULL,l_end); gen_stmt(s->data.while_stmt.body);
             emit("GOTO",NULL,NULL,l_start); emit("LABEL",NULL,NULL,l_end);
-        } else gen_stmt(s->data.block.stmts);
+        } else if(s->type==STMT_BLOCK){
+            gen_stmt(s->data.block.stmts);
+        } else if(s->type==STMT_DECL){
+            /* Declarations do not directly emit TAC in this compiler. */
+        }
     }
 }
 

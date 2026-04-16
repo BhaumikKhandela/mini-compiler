@@ -23,8 +23,8 @@ Program parsed_program;
 %token INT IF ELSE WHILE
 %token EQ NEQ LT GT
 
-%type <decl> decl_list id_list
-%type <stmt> stmt stmt_list block
+%type <decl> id_list
+%type <stmt> stmt stmt_list block decl_stmt main_def_stmt
 %type <expr> expr cond
 
 %left EQ NEQ LT GT
@@ -32,11 +32,10 @@ Program parsed_program;
 %left '*' '/'
 
 %%
-program : decl_list stmt_list { parsed_program.decls = $1; parsed_program.stmts = $2; }
-;
+program : stmt_list { parsed_program.decls = NULL; parsed_program.stmts = $1; }
+        ;
 
-decl_list : decl_list INT id_list ';' { $$ = $1; Decl *t=$3; while(t){ $$ = append_decl($$, make_decl(strdup(t->name))); t=t->next; } }
-          | /* empty */ { $$ = NULL; }
+decl_stmt : INT id_list ';' { $$ = make_decl_stmt($2); }
 ;
 
 id_list : id_list ',' IDENT { $$ = append_decl($1, make_decl($3)); }
@@ -48,9 +47,14 @@ stmt_list : stmt_list stmt { $$ = append_stmt($1, $2); }
 ;
 
 stmt : IDENT '=' expr ';' { $$ = make_assign_stmt($1, $3); }
+     | decl_stmt { $$ = $1; }
+     | main_def_stmt { $$ = $1; }
      | IF '(' cond ')' stmt ELSE stmt { $$ = make_if_stmt($3, $5, $7); }
      | WHILE '(' cond ')' stmt { $$ = make_while_stmt($3, $5); }
      | block { $$ = $1; }
+;
+
+main_def_stmt : INT IDENT '(' ')' block { $$ = $5; }
 ;
 
 block : '{' stmt_list '}' { $$ = make_block_stmt($2); }

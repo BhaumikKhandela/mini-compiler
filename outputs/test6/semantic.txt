@@ -1,0 +1,3 @@
+Declared: a
+Declared: b
+Semantic analysis successful

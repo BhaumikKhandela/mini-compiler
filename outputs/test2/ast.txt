@@ -1,9 +1,6 @@
 Declarations:
-  int a
-  int b
-  int c
-  int d
 Statements:
+  decl a, b, c, d
   assign a = 2
   assign b = 3
   assign c = ((a + b) * (a + b))

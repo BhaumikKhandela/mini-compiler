@@ -27,8 +27,13 @@ static void check_stmt(const Stmt *s, SymbolTable *t){
         } else if(s->type==STMT_WHILE){
             check_expr(s->data.while_stmt.cond,t);
             check_stmt(s->data.while_stmt.body,t);
-        } else {
+        } else if(s->type==STMT_BLOCK){
             check_stmt(s->data.block.stmts,t);
+        } else if(s->type==STMT_DECL){
+            for(Decl*d=s->data.decl_stmt.decls; d; d=d->next){
+                if(!symtab_add(t,d->name)){ fprintf(out,"Error: redeclaration of '%s'\n",d->name); errors++; }
+                else fprintf(out,"Declared: %s\n", d->name);
+            }
         }
     }
 }

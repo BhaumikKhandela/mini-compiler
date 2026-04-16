@@ -1,0 +1,10 @@
+a = 5
+b = 5
+t1 = a + b
+t2 = t1 > 10
+IFZ t2 GOTO L1
+b = 10
+GOTO L2
+L1:
+a = 10
+L2:

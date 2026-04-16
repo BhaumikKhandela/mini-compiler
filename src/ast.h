@@ -2,7 +2,7 @@
 #define AST_H
 
 typedef enum { EXPR_INT, EXPR_VAR, EXPR_BINOP } ExprType;
-typedef enum { STMT_ASSIGN, STMT_IF, STMT_WHILE, STMT_BLOCK } StmtType;
+typedef enum { STMT_ASSIGN, STMT_IF, STMT_WHILE, STMT_BLOCK, STMT_DECL } StmtType;
 
 typedef struct Expr Expr;
 typedef struct Stmt Stmt;
@@ -27,6 +27,7 @@ struct Stmt {
         struct { Expr *cond; Stmt *then_branch; Stmt *else_branch; } if_stmt;
         struct { Expr *cond; Stmt *body; } while_stmt;
         struct { Stmt *stmts; } block;
+        struct { Decl *decls; } decl_stmt;
     } data;
 };
 
@@ -49,6 +50,7 @@ Stmt *make_while_stmt(Expr *cond, Stmt *body);
 Stmt *make_block_stmt(Stmt *stmts);
 Decl *make_decl(char *name);
 Decl *append_decl(Decl *list, Decl *node);
+Stmt *make_decl_stmt(Decl *decls);
 Stmt *append_stmt(Stmt *list, Stmt *node);
 void free_program(Program *program);
 void print_ast(const Program *program);
