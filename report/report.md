@@ -9,26 +9,37 @@ This project implements a Toy-C mini compiler using Flex and Bison with the foll
 5. Basic optimization (`src/optimizer.c`)
 6. Target code generation (`src/codegen.c`)
 
+The lexer also skips C-style preprocessor directives (e.g. `#include ...`) so toy inputs that look like C headers can still be tokenized.
+
 ## 2. Core Grammar
 Supported language subset:
 - Data type: `int`
 - Expressions: `+ - * / < > == !=`
-- Statements: assignment, `if-else`, `while`, block
+- Statements: declarations, assignment, `if-else`, `while`, block
 
-Grammar highlights (Bison):
-- `program -> decl_list stmt_list`
-- `decl_list -> decl_list INT id_list ';' | empty`
-- `stmt -> IDENT '=' expr ';' | IF '(' cond ')' stmt ELSE stmt | WHILE '(' cond ')' stmt | block`
-- `expr` supports binary operators and parentheses.
+Grammar highlights (Bison) in this version:
+- `program -> stmt_list`
+- `stmt_list -> stmt_list stmt | empty`
+- Declarations:
+  - `decl_stmt -> INT id_list ';'`
+  - A `decl_stmt` can appear as a `stmt` (including inside `{ ... }` blocks)
+- Function wrapper:
+  - `main_def_stmt -> INT IDENT '(' ')' block`
+  - `main_def_stmt` is treated as a top-level `stmt` whose value is its inner `block`
+- Control flow:
+  - `stmt -> IF '(' cond ')' stmt ELSE stmt | WHILE '(' cond ')' stmt | block`
+- Expressions:
+  - binary ops: `+ - * / < > == !=`
+  - parentheses and atoms: `IDENT`, `NUMBER`
 
 Parser used: **Bison LALR(1)** parser with precedence declarations.
 
 ## 3. Chosen ISA And Instruction Subset
-Target is a MIPS-like hypothetical ISA with limited registers (`R0`..`R3` used by generator):
+Target is a MIPS-like hypothetical ISA generated from TAC (pseudo assembly):
 - Data movement: `LI`, `LOAD`, `STORE`
 - Arithmetic: `ADD`, `SUB`, `MUL`, `DIV`
 - Comparison/set: `SLT`, `SEQ`, `SNE`
-- Branch/control flow: `BEQ`, `J`, labels
+- Branch/control flow: `BEQ` (for TAC `IFZ`), `J` (for TAC `GOTO`), and labels
 
 ## 4. Semantic Rules Implemented
 - Undeclared variable usage detection
@@ -44,11 +55,11 @@ Optimizations implemented:
 
 ## 6. Test Programs
 Five programs are provided in `tests/`:
-- `test1.toy`: arithmetic assignments
-- `test2.toy`: nested expression and repeatable subexpression
-- `test3.toy`: if-else with comparison
-- `test4.toy`: while loop accumulation
-- `test5.toy`: mixed if-else and loop
+- `test1.toy`: nested expression and repeatable subexpression
+- `test2.toy`: if-else with comparison
+- `test3.toy`: while loop accumulation
+- `test4.toy`: mixed if-else and loop
+- `test5.toy`: `int main() { ... }` wrapper with block-scoped declarations
 
 For each test, outputs are produced in `outputs/<test>/`:
 - `tokens.txt`
@@ -61,11 +72,6 @@ For each test, outputs are produced in `outputs/<test>/`:
 ## 7. Build And Run
 ```bash
 make
-./compiler tests/test1.toy outputs/test1
-make run-tests
+./scripts/run_tests.sh
 ```
 
-## 8. Limitations
-- No function support
-- No nested scopes in symbol table (single global scope)
-- Register allocation is minimal and fixed-register based
